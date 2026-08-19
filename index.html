@@ -175,7 +175,7 @@ body.bg-dark::before{background:linear-gradient(180deg,rgba(1,12,19,.48),rgba(1,
 .pro-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px}.pro-card{background:rgba(6,38,51,.80);border:1px solid rgba(103,211,248,.23);border-radius:17px;padding:13px;min-height:158px;display:flex;flex-direction:column}.pro-card h4{margin:0 0 9px;color:#5edaff}.pro-card>div{flex:1;line-height:1.5}.pro-card button{border:1px solid #195e78;background:transparent;color:#58d8ff;border-radius:10px;padding:9px;margin-top:9px}
 .quick-pro{display:grid;grid-template-columns:repeat(6,1fr);gap:8px}.quick-pro button{border:1px solid rgba(104,211,248,.22);background:rgba(6,36,49,.78);color:white;border-radius:15px;padding:12px 7px;display:flex;flex-direction:column;align-items:center;font-size:1.25rem}.quick-pro b{font-size:.75rem;margin:5px 0}.quick-pro small{font-size:.6rem;color:#9cbcc8}
 
-/* V30.0 — stabilità layout meteo */
+/* V30.1 — stabilità layout meteo */
 .pro-content{min-width:0}
 .pro-weather{
   grid-template-columns:minmax(180px,1.5fr) repeat(4,minmax(105px,1fr)) minmax(118px,auto);
@@ -690,7 +690,7 @@ window.addEventListener('load',function(){
   <div class="splash-loader"><span></span></div>
 </div>
 
-<header><div class="brand"><div class="logo">AI</div><div><h1>Angel’s Tuna <span class="tag">30.0</span></h1><small>Professional Drifting Assistant</small></div></div></header>
+<header><div class="brand"><div class="logo">AI</div><div><h1>Angel’s Tuna <span class="tag">30.1</span></h1><small>Professional Drifting Assistant</small></div></div></header>
 
 <main>
 
@@ -1018,6 +1018,15 @@ window.addEventListener('load',function(){
     <div class="fishing-meter"><div id="fishScoreBar" style="width:0"></div></div>
     <div id="fishSummary" style="color:var(--muted)">Seleziona data e posizione.</div>
     <div id="fishingWindows" class="fishing-time-grid"></div>
+<div id="fishClearPanel" style="margin-top:14px;border:1px solid #3e91ad;background:rgba(4,31,42,.94);border-radius:14px;padding:13px">
+ <small style="color:#9fe8ff;font-weight:800">🎣 FISHING TIME — LETTURA RAPIDA</small>
+ <div id="fishClearBest" style="font-size:1.5rem;font-weight:950;color:#fff;margin-top:6px">Calcolo…</div>
+ <div id="fishClearSecond" style="font-size:1rem;font-weight:800;color:#bfefff;margin-top:5px"></div>
+ <div id="fishClearAdvice" style="margin-top:10px;padding:10px;border-left:4px solid #f2a43b;background:rgba(242,164,59,.12);border-radius:8px"></div>
+ <div id="fishClearTimeline" style="display:grid;grid-template-columns:repeat(3,1fr);gap:5px;margin-top:11px"></div>
+ <small style="display:block;margin-top:9px;color:#a9bdc6">Le finestre sono indicative: in mare dai priorità a marcature, foraggio, corrente, vento e temperatura.</small>
+</div>
+
     <div class="fishing-disclaimer">
       Fishing Time usa una logica solunare: transito/antitransito lunare come finestre principali e sorgere/tramontare della Luna come finestre secondarie. È un indicatore di pianificazione, non una garanzia di cattura. Meteo, corrente, foraggio, temperatura, stagione e letture reali del Garmin restano più importanti.
     </div>
@@ -1679,7 +1688,7 @@ function loadScientificTimers(){const chum=+(localStorage.getItem('angels_tuna_t
 let passageResult=null;
 
 
-function scientificMoonData(date){const known=new Date(Date.UTC(2000,0,6,18,14)),cycle=30.03058867;const age=((((date-known)/86400000)%cycle)+cycle)%cycle;const illumination=(1-Math.cos(2*Math.PI*age/cycle))/2;let phase='Luna nuova';if(age<1.85)phase='Luna nuova';else if(age<5.54)phase='Falce crescente';else if(age<9.23)phase='Primo quarto';else if(age<12.92)phase='Gibbosa crescente';else if(age<16.61)phase='Luna piena';else if(age<20.30)phase='Gibbosa calante';else if(age<23.99)phase='Ultimo quarto';else if(age<27.68)phase='Falce calante';return{age,illumination,phase}}
+function scientificMoonData(date){const known=new Date(Date.UTC(2000,0,6,18,14)),cycle=30.13058867;const age=((((date-known)/86400000)%cycle)+cycle)%cycle;const illumination=(1-Math.cos(2*Math.PI*age/cycle))/2;let phase='Luna nuova';if(age<1.85)phase='Luna nuova';else if(age<5.54)phase='Falce crescente';else if(age<9.23)phase='Primo quarto';else if(age<12.92)phase='Gibbosa crescente';else if(age<16.61)phase='Luna piena';else if(age<20.30)phase='Gibbosa calante';else if(age<23.99)phase='Ultimo quarto';else if(age<27.68)phase='Falce calante';return{age,illumination,phase}}
 function detectRegionFromCoordinates(lat,lon){if(lat>=39&&lat<=43.2&&lon>=15.8&&lon<=20.2)return'south_adriatic';if(lat>43.2&&lat<=46.2&&lon>=12&&lon<=19)return'north_adriatic';if(lat>=35&&lat<40.5&&lon>=14&&lon<=21.5)return'ionian';if(lat>=34.5&&lat<=38.8&&lon>=10&&lon<15.5)return'sicily_channel';if(lat>=37&&lat<=44.5&&lon>=8&&lon<14.5)return'tyrrhenian';if(lon<10)return'west_med';return'east_med'}
 const scientificProfiles={south_adriatic:{name:'Adriatico meridionale',tuna:{spring:{phase:'migrazione riproduttiva / pre-riproduttiva',bands:[65,75,85],column:[15,50],temp:[20,25]},summer:{phase:'riproduzione tardiva e alimentazione post-riproduttiva',bands:[60,70,80],column:[15,50],temp:[23,29]},autumn:{phase:'alimentazione e dispersione',bands:[65,75,85],column:[20,60],temp:[20,27]},winter:{phase:'presenza meno prevedibile e dispersione',bands:[75,90,110],column:[30,90],temp:[14,21]}},little:{spring:{phase:'risalita stagionale',bands:[45,55,65],column:[10,35],temp:[19,24]},summer:{phase:'alimentazione costiera e di piattaforma',bands:[55,65,72],column:[8,35],temp:[24,29]},autumn:{phase:'alimentazione e dispersione',bands:[55,68,78],column:[12,45],temp:[21,27]},winter:{phase:'presenza ridotta',bands:[65,80,95],column:[20,60],temp:[15,22]}}},north_adriatic:{name:'Adriatico settentrionale',tuna:{spring:{phase:'ingresso stagionale',bands:[35,50,70],column:[10,40],temp:[18,24]},summer:{phase:'alimentazione su piattaforma',bands:[40,60,80],column:[10,45],temp:[22,28]},autumn:{phase:'alimentazione e uscita stagionale',bands:[50,70,90],column:[15,60],temp:[19,26]},winter:{phase:'bassa prevedibilità',bands:[70,100,130],column:[30,100],temp:[10,18]}}},ionian:{name:'Mar Ionio',tuna:{spring:{phase:'migrazione verso aree riproduttive',bands:[80,120,180],column:[20,80],temp:[20,25]},summer:{phase:'riproduzione e post-riproduzione',bands:[70,100,150],column:[15,70],temp:[23,29]},autumn:{phase:'alimentazione pelagica',bands:[90,150,250],column:[25,100],temp:[21,27]},winter:{phase:'dispersione profonda',bands:[150,250,400],column:[50,200],temp:[15,22]}}},sicily_channel:{name:'Canale di Sicilia',tuna:{spring:{phase:'avvicinamento alle aree riproduttive',bands:[100,200,400],column:[20,100],temp:[20,25]},summer:{phase:'riproduzione',bands:[100,250,500],column:[10,80],temp:[23,29]},autumn:{phase:'post-riproduzione e alimentazione',bands:[150,300,600],column:[30,150],temp:[21,27]},winter:{phase:'dispersione',bands:[250,500,800],column:[50,250],temp:[16,23]}}},tyrrhenian:{name:'Mar Tirreno',tuna:{spring:{phase:'migrazione e aggregazione',bands:[100,200,400],column:[20,100],temp:[19,25]},summer:{phase:'riproduzione e alimentazione',bands:[100,250,500],column:[15,100],temp:[23,29]},autumn:{phase:'post-riproduzione',bands:[150,300,600],column:[30,160],temp:[21,27]},winter:{phase:'dispersione profonda',bands:[250,500,900],column:[60,300],temp:[15,22]}}},west_med:{name:'Mediterraneo occidentale',tuna:{spring:{phase:'migrazione riproduttiva',bands:[150,300,600],column:[20,120],temp:[19,25]},summer:{phase:'riproduzione e post-riproduzione',bands:[100,250,500],column:[15,100],temp:[23,29]},autumn:{phase:'alimentazione e dispersione',bands:[200,500,900],column:[30,200],temp:[20,27]},winter:{phase:'dispersione',bands:[300,700,1200],column:[70,350],temp:[14,22]}}},east_med:{name:'Mediterraneo orientale',tuna:{spring:{phase:'migrazione e aggregazione',bands:[100,250,500],column:[20,120],temp:[20,26]},summer:{phase:'riproduzione / post-riproduzione',bands:[100,300,600],column:[15,120],temp:[24,30]},autumn:{phase:'alimentazione pelagica',bands:[150,400,800],column:[30,200],temp:[22,28]},winter:{phase:'dispersione',bands:[250,600,1000],column:[60,300],temp:[16,23]}}}};
 function scientificSeason(month){if(month>=3&&month<=5)return'spring';if(month>=6&&month<=8)return'summer';if(month>=9&&month<=11)return'autumn';return'winter'}
@@ -2876,7 +2885,7 @@ function openExternalNavigation(kind){
 // ===== V29 - LUNAR TRACKER =====
 // Approximate synodic month calculation. Suitable for planning/diary comparison,
 // not intended for astronomical navigation.
-const SYNODIC_MONTH=30.03058867;
+const SYNODIC_MONTH=30.13058867;
 const KNOWN_NEW_MOON_UTC=Date.UTC(2000,0,6,18,14,0);
 
 function moonDataForDate(value){
@@ -3309,6 +3318,45 @@ if ('serviceWorker' in navigator) {
  document.addEventListener('angelsLeafletReady',()=>setTimeout(attach,100));
  window.addEventListener('online',()=>{status('v30MapStatus','CONNESSIONE RIPRISTINATA',true);scheduleRetry()});
  window.addEventListener('offline',()=>{status('v30MapStatus','OFFLINE',false);status('v30BathyStatus','OFFLINE',false)});
+})();
+</script>
+
+
+<script id="v301-fishing-clear">
+(function(){
+ function parseRange(txt){
+   const m=String(txt||'').match(/(\d{1,2}:\d{2})\s*[–-]\s*(\d{1,2}:\d{2})/);return m?{a:m[1],b:m[2]}:null;
+ }
+ function mins(t){const p=t.split(':').map(Number);return p[0]*60+p[1]}
+ function fmt(m){m=(m+1440)%1440;return String(Math.floor(m/60)).padStart(2,'0')+':'+String(m%60).padStart(2,'0')}
+ function refresh(){
+   const host=document.getElementById('fishingWindows'),best=document.getElementById('fishClearBest');
+   if(!host||!best)return;
+   const cards=[...host.querySelectorAll('.fishing-window')];
+   const ranges=cards.map((c,i)=>({r:parseRange(c.innerText),major:c.classList.contains('major'),i})).filter(x=>x.r);
+   if(!ranges.length){best.textContent='Seleziona data e posizione';return}
+   // Prefer major window closest to dawn/evening; otherwise first major.
+   ranges.forEach(x=>{let mid=(mins(x.r.a)+mins(x.r.b))/2;let h=mid/60;x.rank=(x.major?3:1)+((h>=5&&h<=9)||(h>=17&&h<=21)?2:0)});
+   ranges.sort((a,b)=>b.rank-a.rank);
+   const a=ranges[0],b=ranges[1];
+   best.innerHTML='🔥 MIGLIORE: '+a.r.a+' – '+a.r.b;
+   document.getElementById('fishClearSecond').textContent=b?'Seconda finestra: '+b.r.a+' – '+b.r.b:'';
+   const start=fmt(mins(a.r.a)-20);
+   document.getElementById('fishClearAdvice').innerHTML='<b>Consiglio:</b> prova a essere già in pesca dalle <b>'+start+'</b> e concentra la pasturazione nella finestra migliore.';
+   const centers=ranges.map(x=>({m:(mins(x.r.a)+mins(x.r.b))/2,rank:x.rank}));
+   let html='';
+   for(let st=0;st<24;st+=4){
+     let mid=st*60+120,val=1;
+     centers.forEach(c=>{let d=Math.abs(mid-c.m);d=Math.min(d,1440-d);if(d<=130)val=Math.max(val,c.rank>=3?3:2);else if(d<=240)val=Math.max(val,2)});
+     const label=val===3?'🔥 ALTA':val===2?'MEDIA':'BASSA';
+     const bg=val===3?'rgba(236,143,28,.28)':val===2?'rgba(44,145,181,.20)':'#0b2935';
+     html+='<div style="padding:8px 3px;text-align:center;border-radius:8px;background:'+bg+';border:1px solid rgba(255,255,255,.1)"><b>'+String(st).padStart(2,'0')+'–'+String(st+4).padStart(2,'0')+'</b><br><small>'+label+'</small></div>';
+   }
+   document.getElementById('fishClearTimeline').innerHTML=html;
+ }
+ document.addEventListener('DOMContentLoaded',()=>{setTimeout(refresh,600);const h=document.getElementById('fishingWindows');if(h)new MutationObserver(refresh).observe(h,{childList:true,subtree:true,characterData:true})});
+ document.addEventListener('change',e=>{if(['moonDate','fishLat','fishLon'].includes(e.target?.id))setTimeout(refresh,200)});
+ window.addEventListener('load',()=>setTimeout(refresh,900));
 })();
 </script>
 
