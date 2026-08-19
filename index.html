@@ -175,7 +175,7 @@ body.bg-dark::before{background:linear-gradient(180deg,rgba(1,12,19,.48),rgba(1,
 .pro-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px}.pro-card{background:rgba(6,38,51,.80);border:1px solid rgba(103,211,248,.23);border-radius:17px;padding:13px;min-height:158px;display:flex;flex-direction:column}.pro-card h4{margin:0 0 9px;color:#5edaff}.pro-card>div{flex:1;line-height:1.5}.pro-card button{border:1px solid #195e78;background:transparent;color:#58d8ff;border-radius:10px;padding:9px;margin-top:9px}
 .quick-pro{display:grid;grid-template-columns:repeat(6,1fr);gap:8px}.quick-pro button{border:1px solid rgba(104,211,248,.22);background:rgba(6,36,49,.78);color:white;border-radius:15px;padding:12px 7px;display:flex;flex-direction:column;align-items:center;font-size:1.25rem}.quick-pro b{font-size:.75rem;margin:5px 0}.quick-pro small{font-size:.6rem;color:#9cbcc8}
 
-/* V29.5 — stabilità layout meteo */
+/* V30.0 — stabilità layout meteo */
 .pro-content{min-width:0}
 .pro-weather{
   grid-template-columns:minmax(180px,1.5fr) repeat(4,minmax(105px,1fr)) minmax(118px,auto);
@@ -643,6 +643,25 @@ body.timer-alarm-active::before{
  nav.mobile-nav-all{padding-left:4px;padding-right:4px}
 }
 </style>
+
+<script>
+window.addEventListener('load',function(){
+ if(typeof L==='undefined'){
+   var css=document.createElement('link');css.rel='stylesheet';css.href='https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';document.head.appendChild(css);
+   var s=document.createElement('script');s.src='https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';s.onload=function(){document.dispatchEvent(new Event('angelsLeafletReady'))};document.head.appendChild(s);
+ }
+});
+</script>
+
+<style id="v30-final-map-css">
+.v30-mapbar{display:flex;gap:7px;flex-wrap:wrap;margin:8px 0}
+.v30-mapbar button{border:1px solid #2d7189;background:#072b39;color:#eefbff;border-radius:999px;padding:8px 11px;font-weight:800}
+.v30-mapbar button.active{background:#116486;border-color:#7ce5ff}
+.v30-status{display:flex;gap:7px;flex-wrap:wrap;margin:7px 0}
+.v30-pill{font-size:.78rem;padding:5px 8px;border-radius:999px;background:#102c37;border:1px solid #2d5969}
+.v30-pill.ok{border-color:#3abf86;color:#aaf2d2}.v30-pill.bad{border-color:#cf6c62;color:#ffc1ba}
+.v30-depthbox{background:rgba(3,24,33,.94);border:1px solid #2d7189;border-radius:12px;padding:10px;margin-top:8px}
+</style>
 </head>
 <body>
 
@@ -671,7 +690,7 @@ body.timer-alarm-active::before{
   <div class="splash-loader"><span></span></div>
 </div>
 
-<header><div class="brand"><div class="logo">AI</div><div><h1>Angel’s Tuna <span class="tag">29.5</span></h1><small>Professional Drifting Assistant</small></div></div></header>
+<header><div class="brand"><div class="logo">AI</div><div><h1>Angel’s Tuna <span class="tag">30.0</span></h1><small>Professional Drifting Assistant</small></div></div></header>
 
 <main>
 
@@ -911,6 +930,16 @@ body.timer-alarm-active::before{
  </div>
 </div>
 <div id="migrationMap" class="mig-map"></div>
+<div class="v30-mapbar">
+ <button class="active" onclick="v30SetBase('street',this)">MAPPA</button>
+ <button onclick="v30SetBase('bathy',this)">BATIMETRIA</button>
+ <button onclick="v30SetBase('sat',this)">SATELLITE</button>
+ <button onclick="v30Locate()">📍 CENTRA SU DI ME</button>
+ <button onclick="v30DepthAtCenter()">🌊 PROFONDITÀ QUI</button>
+</div>
+<div class="v30-status"><span id="v30MapStatus" class="v30-pill">Mappa…</span><span id="v30BathyStatus" class="v30-pill">Batimetria…</span></div>
+<div id="v30DepthBox" class="v30-depthbox">Tocca “Profondità qui” per interrogare EMODnet sul centro della carta.</div>
+
 <div class="card" style="margin-top:10px">
  <div class="row"><h3 style="margin:0">Controlli mappa ICCAT</h3><span id="migMapStatus" class="tag">inizializzazione…</span></div>
  <div class="actions" style="margin-top:9px">
@@ -1650,7 +1679,7 @@ function loadScientificTimers(){const chum=+(localStorage.getItem('angels_tuna_t
 let passageResult=null;
 
 
-function scientificMoonData(date){const known=new Date(Date.UTC(2000,0,6,18,14)),cycle=29.53058867;const age=((((date-known)/86400000)%cycle)+cycle)%cycle;const illumination=(1-Math.cos(2*Math.PI*age/cycle))/2;let phase='Luna nuova';if(age<1.85)phase='Luna nuova';else if(age<5.54)phase='Falce crescente';else if(age<9.23)phase='Primo quarto';else if(age<12.92)phase='Gibbosa crescente';else if(age<16.61)phase='Luna piena';else if(age<20.30)phase='Gibbosa calante';else if(age<23.99)phase='Ultimo quarto';else if(age<27.68)phase='Falce calante';return{age,illumination,phase}}
+function scientificMoonData(date){const known=new Date(Date.UTC(2000,0,6,18,14)),cycle=30.03058867;const age=((((date-known)/86400000)%cycle)+cycle)%cycle;const illumination=(1-Math.cos(2*Math.PI*age/cycle))/2;let phase='Luna nuova';if(age<1.85)phase='Luna nuova';else if(age<5.54)phase='Falce crescente';else if(age<9.23)phase='Primo quarto';else if(age<12.92)phase='Gibbosa crescente';else if(age<16.61)phase='Luna piena';else if(age<20.30)phase='Gibbosa calante';else if(age<23.99)phase='Ultimo quarto';else if(age<27.68)phase='Falce calante';return{age,illumination,phase}}
 function detectRegionFromCoordinates(lat,lon){if(lat>=39&&lat<=43.2&&lon>=15.8&&lon<=20.2)return'south_adriatic';if(lat>43.2&&lat<=46.2&&lon>=12&&lon<=19)return'north_adriatic';if(lat>=35&&lat<40.5&&lon>=14&&lon<=21.5)return'ionian';if(lat>=34.5&&lat<=38.8&&lon>=10&&lon<15.5)return'sicily_channel';if(lat>=37&&lat<=44.5&&lon>=8&&lon<14.5)return'tyrrhenian';if(lon<10)return'west_med';return'east_med'}
 const scientificProfiles={south_adriatic:{name:'Adriatico meridionale',tuna:{spring:{phase:'migrazione riproduttiva / pre-riproduttiva',bands:[65,75,85],column:[15,50],temp:[20,25]},summer:{phase:'riproduzione tardiva e alimentazione post-riproduttiva',bands:[60,70,80],column:[15,50],temp:[23,29]},autumn:{phase:'alimentazione e dispersione',bands:[65,75,85],column:[20,60],temp:[20,27]},winter:{phase:'presenza meno prevedibile e dispersione',bands:[75,90,110],column:[30,90],temp:[14,21]}},little:{spring:{phase:'risalita stagionale',bands:[45,55,65],column:[10,35],temp:[19,24]},summer:{phase:'alimentazione costiera e di piattaforma',bands:[55,65,72],column:[8,35],temp:[24,29]},autumn:{phase:'alimentazione e dispersione',bands:[55,68,78],column:[12,45],temp:[21,27]},winter:{phase:'presenza ridotta',bands:[65,80,95],column:[20,60],temp:[15,22]}}},north_adriatic:{name:'Adriatico settentrionale',tuna:{spring:{phase:'ingresso stagionale',bands:[35,50,70],column:[10,40],temp:[18,24]},summer:{phase:'alimentazione su piattaforma',bands:[40,60,80],column:[10,45],temp:[22,28]},autumn:{phase:'alimentazione e uscita stagionale',bands:[50,70,90],column:[15,60],temp:[19,26]},winter:{phase:'bassa prevedibilità',bands:[70,100,130],column:[30,100],temp:[10,18]}}},ionian:{name:'Mar Ionio',tuna:{spring:{phase:'migrazione verso aree riproduttive',bands:[80,120,180],column:[20,80],temp:[20,25]},summer:{phase:'riproduzione e post-riproduzione',bands:[70,100,150],column:[15,70],temp:[23,29]},autumn:{phase:'alimentazione pelagica',bands:[90,150,250],column:[25,100],temp:[21,27]},winter:{phase:'dispersione profonda',bands:[150,250,400],column:[50,200],temp:[15,22]}}},sicily_channel:{name:'Canale di Sicilia',tuna:{spring:{phase:'avvicinamento alle aree riproduttive',bands:[100,200,400],column:[20,100],temp:[20,25]},summer:{phase:'riproduzione',bands:[100,250,500],column:[10,80],temp:[23,29]},autumn:{phase:'post-riproduzione e alimentazione',bands:[150,300,600],column:[30,150],temp:[21,27]},winter:{phase:'dispersione',bands:[250,500,800],column:[50,250],temp:[16,23]}}},tyrrhenian:{name:'Mar Tirreno',tuna:{spring:{phase:'migrazione e aggregazione',bands:[100,200,400],column:[20,100],temp:[19,25]},summer:{phase:'riproduzione e alimentazione',bands:[100,250,500],column:[15,100],temp:[23,29]},autumn:{phase:'post-riproduzione',bands:[150,300,600],column:[30,160],temp:[21,27]},winter:{phase:'dispersione profonda',bands:[250,500,900],column:[60,300],temp:[15,22]}}},west_med:{name:'Mediterraneo occidentale',tuna:{spring:{phase:'migrazione riproduttiva',bands:[150,300,600],column:[20,120],temp:[19,25]},summer:{phase:'riproduzione e post-riproduzione',bands:[100,250,500],column:[15,100],temp:[23,29]},autumn:{phase:'alimentazione e dispersione',bands:[200,500,900],column:[30,200],temp:[20,27]},winter:{phase:'dispersione',bands:[300,700,1200],column:[70,350],temp:[14,22]}}},east_med:{name:'Mediterraneo orientale',tuna:{spring:{phase:'migrazione e aggregazione',bands:[100,250,500],column:[20,120],temp:[20,26]},summer:{phase:'riproduzione / post-riproduzione',bands:[100,300,600],column:[15,120],temp:[24,30]},autumn:{phase:'alimentazione pelagica',bands:[150,400,800],column:[30,200],temp:[22,28]},winter:{phase:'dispersione',bands:[250,600,1000],column:[60,300],temp:[16,23]}}}};
 function scientificSeason(month){if(month>=3&&month<=5)return'spring';if(month>=6&&month<=8)return'summer';if(month>=9&&month<=11)return'autumn';return'winter'}
@@ -2847,7 +2876,7 @@ function openExternalNavigation(kind){
 // ===== V29 - LUNAR TRACKER =====
 // Approximate synodic month calculation. Suitable for planning/diary comparison,
 // not intended for astronomical navigation.
-const SYNODIC_MONTH=29.53058867;
+const SYNODIC_MONTH=30.03058867;
 const KNOWN_NEW_MOON_UTC=Date.UTC(2000,0,6,18,14,0);
 
 function moonDataForDate(value){
@@ -3198,6 +3227,89 @@ if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('./service-worker.js').catch(console.warn);
   });
 }
+</script>
+
+
+<script id="v30-final-map-engine">
+(function(){
+ let street=null,sat=null,bathyWMS=null,activeBase='street',retryTimer=null;
+ const emodWMS='https://ows.emodnet-bathymetry.eu/wms';
+ function E(id){return document.getElementById(id)}
+ function status(id,txt,ok){const e=E(id);if(!e)return;e.textContent=txt;e.className='v30-pill '+(ok?'ok':'bad')}
+ function mapObj(){return window.migrationMap || (typeof migrationMap!=='undefined'?migrationMap:null)}
+ function ensureLayers(){
+   const m=mapObj(); if(!m||typeof L==='undefined')return false;
+   if(!street){
+     street=L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,crossOrigin:true,attribution:'© OpenStreetMap'});
+     street.on('load',()=>status('v30MapStatus','MAPPA ONLINE',true));
+     street.on('tileerror',()=>{status('v30MapStatus','MAPPA: retry…',false);scheduleRetry()});
+   }
+   if(!sat){
+     sat=L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{maxZoom:18,crossOrigin:true,attribution:'Esri World Imagery'});
+     sat.on('load',()=>status('v30MapStatus','SATELLITE ONLINE',true));
+     sat.on('tileerror',()=>status('v30MapStatus','SATELLITE NON DISP.',false));
+   }
+   if(!bathyWMS){
+     bathyWMS=L.tileLayer.wms(emodWMS,{layers:'emodnet:mean_multicolour',styles:'',format:'image/png',transparent:true,version:'1.1.1',opacity:.82,tiled:true,attribution:'EMODnet Bathymetry'});
+     bathyWMS.on('load',()=>status('v30BathyStatus','BATIMETRIA ONLINE',true));
+     bathyWMS.on('tileerror',()=>{status('v30BathyStatus','BATIMETRIA: retry…',false);scheduleRetry()});
+   }
+   return true;
+ }
+ function scheduleRetry(){
+   clearTimeout(retryTimer);retryTimer=setTimeout(()=>{const m=mapObj();if(!m)return;try{m.invalidateSize(); if(street)street.redraw();if(bathyWMS)bathyWMS.redraw();}catch(e){}},1800);
+ }
+ window.v30SetBase=function(type,btn){
+   const m=mapObj();if(!ensureLayers()||!m)return;
+   document.querySelectorAll('.v30-mapbar button').forEach(b=>b.classList.remove('active'));if(btn)btn.classList.add('active');
+   [street,sat,bathyWMS].forEach(l=>{try{if(m.hasLayer(l))m.removeLayer(l)}catch(e){}});
+   activeBase=type;
+   if(type==='street'){street.addTo(m);bathyWMS.setOpacity(.28);bathyWMS.addTo(m)}
+   else if(type==='bathy'){street.addTo(m);bathyWMS.setOpacity(.90);bathyWMS.addTo(m)}
+   else {sat.addTo(m);bathyWMS.setOpacity(.30);bathyWMS.addTo(m)}
+   setTimeout(()=>m.invalidateSize(),80);
+ }
+ window.v30Locate=function(){
+   const m=mapObj();if(!m)return;
+   if(!navigator.geolocation){status('v30MapStatus','GPS NON DISP.',false);return}
+   status('v30MapStatus','GPS…',true);
+   navigator.geolocation.getCurrentPosition(p=>{
+     const ll=[p.coords.latitude,p.coords.longitude];m.setView(ll,13);
+     L.circleMarker(ll,{radius:9,color:'#fff',weight:2,fillColor:'#ff3bd4',fillOpacity:.95}).addTo(m).bindPopup('La mia posizione').openPopup();
+     status('v30MapStatus','GPS ATTIVO',true);
+   },()=>status('v30MapStatus','GPS NON AUTORIZZATO',false),{enableHighAccuracy:true,timeout:12000});
+ }
+ window.v30DepthAtCenter=async function(){
+   const m=mapObj(),box=E('v30DepthBox');if(!m||!box)return;
+   const c=m.getCenter();box.textContent='Interrogazione EMODnet…';
+   const url='https://rest.emodnet-bathymetry.eu/depth_sample?geom='+encodeURIComponent(`POINT(${c.lng} ${c.lat})`);
+   try{
+     const r=await fetch(url,{headers:{'Accept':'application/json'}});if(!r.ok)throw new Error('HTTP '+r.status);
+     const d=await r.json();const depth=(d.smoothed??d.avg??d.max);
+     box.innerHTML=`<b>Profondità EMODnet:</b> ${Number(depth).toFixed(1)} m<br><small>${c.lat.toFixed(5)}, ${c.lng.toFixed(5)} · DTM EMODnet; non sostituisce ecoscandaglio/carta nautica.</small>`;
+     status('v30BathyStatus','PROFONDITÀ ONLINE',true);
+   }catch(e){
+     box.innerHTML='<b>Profondità non disponibile.</b> Connessione o servizio EMODnet momentaneamente non raggiungibile.';
+     status('v30BathyStatus','REST EMODNET OFFLINE',false);
+   }
+ }
+ function attach(){
+   const m=mapObj();if(!m||typeof L==='undefined')return false;
+   ensureLayers();
+   // Remove older EMODnet layer if exposed by prior engine to prevent double rendering.
+   try{if(typeof iccatBathyLayer!=='undefined'&&iccatBathyLayer&&m.hasLayer(iccatBathyLayer))m.removeLayer(iccatBathyLayer)}catch(e){}
+   window.v30SetBase('street',document.querySelector('.v30-mapbar button'));
+   m.on('click',async e=>{
+     const box=E('v30DepthBox');if(!box)return;
+     box.textContent=`Punto selezionato ${e.latlng.lat.toFixed(5)}, ${e.latlng.lng.toFixed(5)} · premi “Profondità qui” per il centro carta.`;
+   });
+   return true;
+ }
+ document.addEventListener('DOMContentLoaded',()=>{let n=0;const t=setInterval(()=>{n++;if(attach()||n>20)clearInterval(t)},400)});
+ document.addEventListener('angelsLeafletReady',()=>setTimeout(attach,100));
+ window.addEventListener('online',()=>{status('v30MapStatus','CONNESSIONE RIPRISTINATA',true);scheduleRetry()});
+ window.addEventListener('offline',()=>{status('v30MapStatus','OFFLINE',false);status('v30BathyStatus','OFFLINE',false)});
+})();
 </script>
 
 </body>

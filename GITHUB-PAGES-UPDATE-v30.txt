@@ -1,0 +1,18 @@
+ANGEL'S TUNA v30 FINAL — MAP & BATHYMETRY
+
+NOVITA:
+- modalità MAPPA / BATIMETRIA / SATELLITE;
+- EMODnet WMS rinforzato con retry e stato servizio;
+- profondità puntuale tramite REST EMODnet;
+- centra su GPS;
+- indicatori MAPPA/BATIMETRIA online;
+- fallback Leaflet;
+- mantiene video, sfondo, ICCAT, Fishing Time, Luna, Spot, Diario e PWA.
+
+NOTA:
+Le mappe marine online richiedono connessione. La profondità EMODnet è DTM e non sostituisce
+ecoscandaglio o cartografia nautica ufficiale.
+
+UPLOAD:
+GitHub > angels-tuna > Add file > Upload files > carica tutti i file estratti > Commit.
+Pages si aggiorna automaticamente.
