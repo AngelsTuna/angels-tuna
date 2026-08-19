@@ -1,0 +1,14 @@
+ANGEL'S TUNA v30.2 FINAL
+
+NOVITA:
+- Intro con pulsante AVVIA ANGEL'S TUNA.
+- Dopo il tocco parte un suono sintetico di frizione/mulinello per circa 3 secondi.
+- Audio apertura disattivabile dalle Impostazioni.
+- Fishing Time riscritto da zero: non dipende più da SunCalc/CDN.
+- Calcolo locale di transito, antitransito, moonrise e moonset.
+- Migliore finestra, seconda finestra, timeline 24h e spiegazione del perché.
+- Lo storico delle tue catture contribuisce alla priorità degli orari.
+- Mantiene v30: mappe, batimetria, satellite, ICCAT, Spot, Ricordi, Luna, PWA.
+
+AGGIORNAMENTO GITHUB:
+Aggiungi file > Carica file > estrai ZIP > trascina tutti i file > Conferma modifiche.
