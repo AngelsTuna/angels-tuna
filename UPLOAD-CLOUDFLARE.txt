@@ -1,0 +1,4 @@
+ANGEL'S TUNA v29.3 WEB-LITE
+Cloudflare Pages: Upload static files > carica questo ZIP oppure la cartella estratta > Deploy.
+Il video intro è stato rimosso per rendere l'upload più leggero. ICCAT, GPS, spot, catture,
+batimetria e PWA restano nel pacchetto.
