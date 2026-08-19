@@ -1,0 +1,18 @@
+ANGEL'S TUNA v29.3 WEB/PWA — CLOUDFLARE PAGES
+
+1. Accedi a Cloudflare.
+2. Apri Workers & Pages.
+3. Crea una nuova applicazione / Pages.
+4. Scegli Direct Upload / Drag and drop.
+5. Dai al progetto un nome, ad esempio angels-tuna.
+6. Carica QUESTO ZIP oppure la cartella estratta.
+7. Pubblica.
+8. Cloudflare assegnerà un indirizzo *.pages.dev.
+
+IPHONE
+Apri l'indirizzo in Safari > Condividi > Aggiungi alla schermata Home.
+Per GPS e funzioni web usa sempre l'indirizzo HTTPS pubblicato da Cloudflare.
+
+NOTA OFFLINE
+Interfaccia e dataset ICCAT sono messi in cache dalla PWA.
+Le mappe OpenStreetMap/EMODnet richiedono normalmente una connessione Internet per scaricare le tessere non già disponibili.

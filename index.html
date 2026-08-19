@@ -19,7 +19,7 @@
 body{
  background:
    linear-gradient(180deg,rgba(2,19,29,.48),rgba(2,19,29,.78)),
-   url('underwater-tuna-v29.png') center center/cover fixed no-repeat;
+   url('./underwater-tuna-v29.png') center center/cover fixed no-repeat;
  position:relative
 }
 body::before{
@@ -175,7 +175,7 @@ body.bg-dark::before{background:linear-gradient(180deg,rgba(1,12,19,.48),rgba(1,
 .pro-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px}.pro-card{background:rgba(6,38,51,.80);border:1px solid rgba(103,211,248,.23);border-radius:17px;padding:13px;min-height:158px;display:flex;flex-direction:column}.pro-card h4{margin:0 0 9px;color:#5edaff}.pro-card>div{flex:1;line-height:1.5}.pro-card button{border:1px solid #195e78;background:transparent;color:#58d8ff;border-radius:10px;padding:9px;margin-top:9px}
 .quick-pro{display:grid;grid-template-columns:repeat(6,1fr);gap:8px}.quick-pro button{border:1px solid rgba(104,211,248,.22);background:rgba(6,36,49,.78);color:white;border-radius:15px;padding:12px 7px;display:flex;flex-direction:column;align-items:center;font-size:1.25rem}.quick-pro b{font-size:.75rem;margin:5px 0}.quick-pro small{font-size:.6rem;color:#9cbcc8}
 
-/* V29.3 — stabilità layout meteo */
+/* V29.4 — stabilità layout meteo */
 .pro-content{min-width:0}
 .pro-weather{
   grid-template-columns:minmax(180px,1.5fr) repeat(4,minmax(105px,1fr)) minmax(118px,auto);
@@ -511,14 +511,14 @@ body.timer-alarm-active::before{
     min-height: 100%;
     background:
       linear-gradient(rgba(0,18,28,.30), rgba(0,12,22,.50)),
-      url('underwater-tuna-v29.png') center center / cover fixed no-repeat !important;
+      url('./underwater-tuna-v29.png') center center / cover fixed no-repeat !important;
   }
   body::before {
     content:"";
     position:fixed;
     inset:0;
     z-index:-2;
-    background:url('underwater-tuna-v29.png') center center / cover no-repeat;
+    background:url('./underwater-tuna-v29.png') center center / cover no-repeat;
   }
   body::after {
     content:"";
@@ -547,14 +547,14 @@ body.timer-alarm-active::before{
     min-height: 100%;
     background:
       linear-gradient(rgba(0,18,28,.24), rgba(0,10,18,.48)),
-      url('underwater-tuna-v29.png') center center / cover fixed no-repeat !important;
+      url('./underwater-tuna-v29.png') center center / cover fixed no-repeat !important;
   }
   body::before {
     content:"";
     position:fixed;
     inset:0;
     z-index:-2;
-    background:url('underwater-tuna-v29.png') center center / cover no-repeat;
+    background:url('./underwater-tuna-v29.png') center center / cover no-repeat;
   }
   body::after {
     content:"";
@@ -627,7 +627,7 @@ body.timer-alarm-active::before{
 
 <div id="angelsIntroSplash" aria-label="Angel's Tuna apertura">
   <video id="angelsIntroVideo" class="intro-video" autoplay muted playsinline preload="auto">
-    
+    <source src="./intro-video.mp4" type="video/mp4">
   </video>
   <div class="intro-rays"></div>
   <div class="intro-shade"></div>
@@ -650,7 +650,7 @@ body.timer-alarm-active::before{
   <div class="splash-loader"><span></span></div>
 </div>
 
-<header><div class="brand"><div class="logo">AI</div><div><h1>Angel’s Tuna <span class="tag">29.3</span></h1><small>Professional Drifting Assistant</small></div></div></header>
+<header><div class="brand"><div class="logo">AI</div><div><h1>Angel’s Tuna <span class="tag">29.4</span></h1><small>Professional Drifting Assistant</small></div></div></header>
 
 <main>
 

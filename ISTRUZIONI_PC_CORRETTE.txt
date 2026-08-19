@@ -1,0 +1,21 @@
+ANGEL'S TUNA v24 - VERSIONE PC TEST CORRETTA
+
+1) Estrai TUTTO lo ZIP in una cartella.
+2) Fai doppio clic su:
+   AVVIA ANGELS TUNA.bat
+
+Il launcher prova automaticamente:
+- py -m http.server 8080
+- python -m http.server 8080
+- php -S localhost:8080
+
+Se nessuno è disponibile, apre index.html direttamente.
+
+IMPORTANTE:
+- Per GPS, fotocamera, PWA e alcune funzioni browser è preferibile un server locale.
+- Se il launcher non parte, fai doppio clic su:
+  DIAGNOSTICA ANGELS TUNA.bat
+  Questa finestra resta aperta e mostra cosa manca.
+
+URL quando il server funziona:
+http://localhost:8080

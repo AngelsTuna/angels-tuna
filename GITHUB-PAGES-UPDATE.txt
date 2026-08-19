@@ -1,0 +1,9 @@
+ANGEL'S TUNA v29.4 — GITHUB PAGES FULL
+- Video intro ripristinato.
+- Sfondo underwater ripristinato.
+- Percorsi asset resi relativi per GitHub Pages (/angels-tuna/).
+- PWA e service worker aggiornati.
+
+AGGIORNAMENTO GITHUB:
+Repository > Add file > Upload files > trascina TUTTI i file di questa cartella.
+Conferma le modifiche. GitHub Pages aggiornerà automaticamente il sito.

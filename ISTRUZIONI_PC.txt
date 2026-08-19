@@ -1,0 +1,21 @@
+ANGEL'S TUNA v24 - PC TEST
+
+1. Estrai tutto lo ZIP in una cartella del PC.
+2. Fai doppio clic su: AVVIA ANGELS TUNA.bat
+3. Si aprira il browser su: http://localhost:8080
+4. Lascia aperta la finestra nera mentre utilizzi l'app.
+5. Per chiudere l'app locale, chiudi la finestra nera o premi CTRL+C.
+
+NESSUN CREDITO NETLIFY VIENE UTILIZZATO.
+
+REQUISITO:
+Il metodo automatico usa Python installato sul PC. Se Python non e presente, il file BAT te lo segnala.
+
+NOTA IMPORTANTE:
+- Questa versione e ideale per testare l'app sul PC.
+- GPS e alcune funzioni legate ai sensori dipendono dal dispositivo/browser.
+- La cartografia e la batimetria online richiedono connessione Internet.
+- Per l'uso dall'iPhone in mare e per installarla come PWA, e preferibile una pubblicazione HTTPS.
+
+DATI:
+Usando sempre http://localhost:8080 sullo stesso browser, i dati locali restano associati a quell'origine. Fai comunque i backup JSON e foto prima di modifiche importanti.
