@@ -175,7 +175,7 @@ body.bg-dark::before{background:linear-gradient(180deg,rgba(1,12,19,.48),rgba(1,
 .pro-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px}.pro-card{background:rgba(6,38,51,.80);border:1px solid rgba(103,211,248,.23);border-radius:17px;padding:13px;min-height:158px;display:flex;flex-direction:column}.pro-card h4{margin:0 0 9px;color:#5edaff}.pro-card>div{flex:1;line-height:1.5}.pro-card button{border:1px solid #195e78;background:transparent;color:#58d8ff;border-radius:10px;padding:9px;margin-top:9px}
 .quick-pro{display:grid;grid-template-columns:repeat(6,1fr);gap:8px}.quick-pro button{border:1px solid rgba(104,211,248,.22);background:rgba(6,36,49,.78);color:white;border-radius:15px;padding:12px 7px;display:flex;flex-direction:column;align-items:center;font-size:1.25rem}.quick-pro b{font-size:.75rem;margin:5px 0}.quick-pro small{font-size:.6rem;color:#9cbcc8}
 
-/* V29.4 — stabilità layout meteo */
+/* V29.5 — stabilità layout meteo */
 .pro-content{min-width:0}
 .pro-weather{
   grid-template-columns:minmax(180px,1.5fr) repeat(4,minmax(105px,1fr)) minmax(118px,auto);
@@ -622,6 +622,27 @@ body.timer-alarm-active::before{
 <link rel="manifest" href="./manifest.webmanifest">
 <link rel="apple-touch-icon" href="./icon-192.png">
 
+<script src="https://cdn.jsdelivr.net/npm/suncalc@1.9.0/suncalc.js"></script>
+
+<style id="angels-v295-mobile-fishingtime-css">
+.mobile-nav-all{overflow-x:auto;overflow-y:hidden;justify-content:flex-start;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.mobile-nav-all::-webkit-scrollbar{display:none}
+.mobile-nav-all button{min-width:72px;flex:0 0 72px}
+.fishing-time-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+.fishing-window{border:1px solid rgba(88,204,241,.25);border-radius:12px;padding:11px;background:rgba(4,28,39,.82)}
+.fishing-window.major{border-color:#f2a43b;background:linear-gradient(180deg,rgba(91,52,8,.28),rgba(4,28,39,.88))}
+.fishing-window.minor{border-color:#52c9ef}
+.fishing-window strong{display:block;font-size:1.15rem;color:#fff}
+.fishing-window small{color:var(--muted)}
+.fishing-score{font-size:2rem;font-weight:900;color:#7ce2ff}
+.fishing-meter{height:10px;background:#09222f;border-radius:999px;overflow:hidden;margin:8px 0}
+.fishing-meter>div{height:100%;background:linear-gradient(90deg,#2b7aa7,#62dcff)}
+.fishing-disclaimer{border-left:3px solid #f2a43b;background:rgba(80,46,8,.20);padding:9px 11px;border-radius:8px;color:#e7edf0;margin-top:10px}
+@media(max-width:650px){
+ .fishing-time-grid{grid-template-columns:1fr}
+ nav.mobile-nav-all{padding-left:4px;padding-right:4px}
+}
+</style>
 </head>
 <body>
 
@@ -650,7 +671,7 @@ body.timer-alarm-active::before{
   <div class="splash-loader"><span></span></div>
 </div>
 
-<header><div class="brand"><div class="logo">AI</div><div><h1>Angel’s Tuna <span class="tag">29.4</span></h1><small>Professional Drifting Assistant</small></div></div></header>
+<header><div class="brand"><div class="logo">AI</div><div><h1>Angel’s Tuna <span class="tag">29.5</span></h1><small>Professional Drifting Assistant</small></div></div></header>
 
 <main>
 
@@ -948,7 +969,32 @@ body.timer-alarm-active::before{
     </div>
   </div>
 
+  
   <div class="card">
+    <div class="row">
+      <div><h3 style="margin:0">🎣 Fishing Time</h3><small style="color:var(--muted)">Finestre solunari indicative</small></div>
+      <button class="btn small secondary" onclick="useGPSForFishingTime()">📍 USA GPS</button>
+    </div>
+    <div class="grid" style="margin-top:10px">
+      <div class="field"><label>Latitudine</label><input id="fishLat" type="number" step="0.0001" value="40.75" onchange="renderFishingTime()"></div>
+      <div class="field"><label>Longitudine</label><input id="fishLon" type="number" step="0.0001" value="17.70" onchange="renderFishingTime()"></div>
+    </div>
+    <div class="row" style="margin-top:10px">
+      <div>
+        <small style="color:var(--muted)">Indice Fishing Time</small>
+        <div id="fishScore" class="fishing-score">—</div>
+      </div>
+      <span id="fishLocationLabel" class="tag">Torre Santa Sabina</span>
+    </div>
+    <div class="fishing-meter"><div id="fishScoreBar" style="width:0"></div></div>
+    <div id="fishSummary" style="color:var(--muted)">Seleziona data e posizione.</div>
+    <div id="fishingWindows" class="fishing-time-grid"></div>
+    <div class="fishing-disclaimer">
+      Fishing Time usa una logica solunare: transito/antitransito lunare come finestre principali e sorgere/tramontare della Luna come finestre secondarie. È un indicatore di pianificazione, non una garanzia di cattura. Meteo, corrente, foraggio, temperatura, stagione e letture reali del Garmin restano più importanti.
+    </div>
+  </div>
+
+<div class="card">
     <h3>Calendario lunare · 28 giorni</h3>
     <div id="moonCalendar" class="moon-calendar"></div>
   </div>
@@ -1243,14 +1289,16 @@ body.timer-alarm-active::before{
 
 </main>
 
-<nav>
+<nav class="mobile-nav-all">
 <button data-page="home" class="active" onclick="go('home')"><span class="ico">⌂</span>Home</button>
 <button data-page="akds" onclick="go('akds')"><span class="ico">⚙</span>AKDS</button>
 <button data-page="garmin" onclick="go('garmin')"><span class="ico">◉</span>Garmin</button>
 <button data-page="ai" onclick="go('ai')"><span class="ico">✦</span>AI</button>
 <button data-page="log" onclick="go('log')"><span class="ico">≋</span>Diario</button>
 <button data-page="map" onclick="go('map')"><span class="ico">🎯</span>Spot</button>
-<button data-page="predictor" onclick="go('predictor')"><span class="ico">🗺</span>ICCAT</button>
+<button data-page="moon" onclick="go('moon')"><span class="ico">🌙</span>Luna</button>
+<button data-page="migration" onclick="go('migration')"><span class="ico">🐟</span>ICCAT</button>
+<button data-page="weather" onclick="go('weather')"><span class="ico">☁</span>Meteo</button>
 <button data-page="stats" onclick="go('stats')"><span class="ico">▥</span>Stats</button>
 </nav>
 
@@ -1416,7 +1464,7 @@ const db={
 let lastAKDS=null,lastAI='',aiSpecies='tuna',timers={chum:null,bait:null},remaining={chum:10,bait:900};
 let reviewedPlanId=null,resultPlanId=null;
 function persist(){for(const k of ['outings','catches','calibrations','plans','spots','settings'])localStorage.setItem('aky_'+k,JSON.stringify(db[k]));localStorage.setItem('aky_gps',JSON.stringify(db.gps))}
-function go(id){document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));$(id).classList.add('active');document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('active',b.dataset.page===id));if(id==='home'){dash();renderReceivedPlans();}if(id==='log')renderLog();if(id==='memories')renderMemories();if(id==='moon')renderMoonPage();if(id==='migration')renderMigration();if(id==='map'){renderGPS();setTimeout(()=>spotMap?.invalidateSize(),100);}if(id==='stats')renderStats();scrollTo(0,0)}
+function go(id){document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));$(id).classList.add('active');document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('active',b.dataset.page===id));if(id==='home'){dash();renderReceivedPlans();}if(id==='log')renderLog();if(id==='memories')renderMemories();if(id==='moon'){renderMoonPage();setTimeout(renderFishingTime,50);}if(id==='migration')renderMigration();if(id==='map'){renderGPS();setTimeout(()=>spotMap?.invalidateSize(),100);}if(id==='stats')renderStats();scrollTo(0,0)}
 
 let homeTarget='tuna',sessionTarget='tuna';
 
@@ -2865,6 +2913,7 @@ function renderMoonPage(){
   renderMoonOrb(m);
   renderMoonCalendar(m.date);
   renderMoonHistory();
+  renderFishingTime();
 }
 function renderMoonCalendar(centerDate){
   const host=$('moonCalendar');if(!host)return;

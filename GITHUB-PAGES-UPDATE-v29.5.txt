@@ -1,0 +1,14 @@
+ANGEL'S TUNA v29.5 — MOBILE + FISHING TIME
+
+NOVITA:
+- Barra mobile scorrevole con Luna e Meteo sempre accessibili.
+- Sezione Fishing Time dentro Fasi Lunari.
+- Finestre maggiori: transito e antitransito lunare ±60 min.
+- Finestre minori: moonrise/moonset ±45 min.
+- GPS per calcolo sulla posizione reale.
+- Indicatore Fishing Time non deterministico.
+- Mantiene video, sfondo, ICCAT, GPS, Spot e PWA.
+
+AGGIORNAMENTO GITHUB:
+Repository > Add file > Upload files > trascina tutti i file della cartella estratta.
+Conferma le modifiche. Pages aggiorna automaticamente.
