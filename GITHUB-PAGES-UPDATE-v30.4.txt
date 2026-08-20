@@ -1,0 +1,14 @@
+ANGEL'S TUNA v30.4 — FISHING TIME FIXED
+
+Correzioni:
+- un solo motore Fishing Time, eliminati i vecchi script in conflitto;
+- SunCalc usato per moonrise/moonset e posizione lunare;
+- transito e antitransito trovati dalla massima/minima altezza della Luna;
+- data e coordinate aggiornano subito il risultato;
+- pulsante USA GPS aggiorna posizione e ricalcola;
+- migliore finestra, seconda finestra, timeline 24h;
+- storico catture usato solo come bonus, non sostituisce i dati astronomici;
+- mantiene mappe affidabili v30.3 e tutte le altre funzioni.
+
+Dopo il deploy GitHub: chiudi completamente la PWA e riaprila. Se resta la vecchia versione,
+apri una volta il sito in Safari e ricaricalo per aggiornare il service worker.

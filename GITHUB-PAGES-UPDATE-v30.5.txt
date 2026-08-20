@@ -1,0 +1,13 @@
+ANGEL'S TUNA v30.5 — REEL SOUND FIX
+
+- Audio reale WAV incluso nel pacchetto: reel-strike-v305.wav
+- Il suono viene avviato DIRETTAMENTE dal tocco su AVVIA ANGEL'S TUNA, per rispettare i blocchi audio di iPhone/Safari.
+- Toggle Audio apertura nelle Impostazioni.
+- Mantiene Fishing Time v30.4 e mappe affidabili v30.3.
+
+Dopo il deploy:
+1. apri il sito in Safari;
+2. ricarica una volta;
+3. chiudi la PWA;
+4. riaprila;
+5. premi AVVIA ANGEL'S TUNA.

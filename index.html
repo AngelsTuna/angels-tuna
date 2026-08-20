@@ -175,7 +175,7 @@ body.bg-dark::before{background:linear-gradient(180deg,rgba(1,12,19,.48),rgba(1,
 .pro-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px}.pro-card{background:rgba(6,38,51,.80);border:1px solid rgba(103,211,248,.23);border-radius:17px;padding:13px;min-height:158px;display:flex;flex-direction:column}.pro-card h4{margin:0 0 9px;color:#5edaff}.pro-card>div{flex:1;line-height:1.5}.pro-card button{border:1px solid #195e78;background:transparent;color:#58d8ff;border-radius:10px;padding:9px;margin-top:9px}
 .quick-pro{display:grid;grid-template-columns:repeat(6,1fr);gap:8px}.quick-pro button{border:1px solid rgba(104,211,248,.22);background:rgba(6,36,49,.78);color:white;border-radius:15px;padding:12px 7px;display:flex;flex-direction:column;align-items:center;font-size:1.25rem}.quick-pro b{font-size:.75rem;margin:5px 0}.quick-pro small{font-size:.6rem;color:#9cbcc8}
 
-/* V30.2 — stabilità layout meteo */
+/* V30.5 — stabilità layout meteo */
 .pro-content{min-width:0}
 .pro-weather{
   grid-template-columns:minmax(180px,1.5fr) repeat(4,minmax(105px,1fr)) minmax(118px,auto);
@@ -622,7 +622,7 @@ body.timer-alarm-active::before{
 <link rel="manifest" href="./manifest.webmanifest">
 <link rel="apple-touch-icon" href="./icon-192.png">
 
-<script src="https://cdn.jsdelivr.net/npm/suncalc@1.9.0/suncalc.js"></script>
+
 
 <style id="angels-v295-mobile-fishingtime-css">
 .mobile-nav-all{overflow-x:auto;overflow-y:hidden;justify-content:flex-start;scrollbar-width:none;-webkit-overflow-scrolling:touch}
@@ -680,6 +680,22 @@ window.addEventListener('load',function(){
 @media(max-width:650px){.ft302-timeline{grid-template-columns:repeat(3,1fr)}}
 </style>
 
+
+<style id="v303-map-fallback-css">
+.v303-card{margin-top:12px}
+.v303-tabs,.v303-toolbar{display:flex;gap:7px;flex-wrap:wrap;margin:9px 0}
+.v303-tabs button,.v303-toolbar button{border:1px solid #2d7189;background:#072b39;color:#eefbff;border-radius:999px;padding:8px 11px;font-weight:850}
+.v303-tabs button.active{background:#126383;border-color:#7ce5ff}
+.v303-coord{font-size:.78rem;color:#a8d9e8;margin:6px 0}
+.v303-viewport{height:55vh;min-height:360px;position:relative;overflow:hidden;border-radius:14px;background:#041722;border:1px solid #285f73}
+.v303-viewport iframe,.v303-viewport img{position:absolute;inset:0;width:100%;height:100%;border:0;object-fit:cover;display:none}
+.v303-viewport iframe.show,.v303-viewport img.show{display:block}
+.v303-crosshair{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:6;font-size:34px;color:#ffcc4d;text-shadow:0 1px 4px #000;pointer-events:none}
+.v303-loading{position:absolute;right:10px;top:10px;z-index:7;background:rgba(2,17,25,.78);padding:6px 9px;border-radius:999px;font-size:.72rem}
+.v303-foot{font-size:.74rem;color:var(--muted);margin-top:8px;line-height:1.35}
+@media(max-width:650px){.v303-viewport{height:48vh;min-height:320px}.v303-tabs button,.v303-toolbar button{padding:8px 9px;font-size:.76rem}}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/suncalc@1.9.0/suncalc.js"></script>
 </head>
 <body>
 
@@ -717,7 +733,7 @@ window.addEventListener('load',function(){
   <div class="splash-loader"><span></span></div>
 </div>
 
-<header><div class="brand"><div class="logo">AI</div><div><h1>Angel’s Tuna <span class="tag">30.2</span></h1><small>Professional Drifting Assistant</small></div></div></header>
+<header><div class="brand"><div class="logo">AI</div><div><h1>Angel’s Tuna <span class="tag">30.5</span></h1><small>Professional Drifting Assistant</small></div></div></header>
 
 <main>
 
@@ -957,6 +973,34 @@ window.addEventListener('load',function(){
  </div>
 </div>
 <div id="migrationMap" class="mig-map"></div>
+<div class="card v303-card">
+  <div class="row">
+    <div><h3 style="margin:0">🗺️ Cartografia affidabile</h3><small style="color:var(--muted)">Fallback indipendente da Leaflet</small></div>
+    <span id="v303Status" class="tag">Pronto</span>
+  </div>
+  <div class="v303-tabs">
+    <button class="active" onclick="v303Mode('map',this)">MAPPA</button>
+    <button onclick="v303Mode('emod',this)">BATIMETRIA EMODnet</button>
+    <button onclick="v303Mode('gebco',this)">BATIMETRIA GEBCO</button>
+  </div>
+  <div class="v303-toolbar">
+    <button onclick="v303Zoom(-1)">− ZOOM</button>
+    <button onclick="v303Zoom(1)">+ ZOOM</button>
+    <button onclick="v303GPS()">📍 USA GPS</button>
+    <button onclick="v303CenterTSS()">TORRE S. SABINA</button>
+  </div>
+  <div id="v303Coord" class="v303-coord">40.7500, 17.7000 · raggio ~20 km</div>
+  <div id="v303Viewport" class="v303-viewport">
+    <iframe id="v303MapFrame" title="Mappa OpenStreetMap" loading="lazy"></iframe>
+    <img id="v303BathyImg" alt="Mappa batimetrica" referrerpolicy="no-referrer">
+    <div class="v303-crosshair">＋</div>
+    <div id="v303Loading" class="v303-loading">Caricamento…</div>
+  </div>
+  <div class="v303-foot">
+    Il punto centrale è indicato dalla croce. EMODnet è la fonte primaria per le acque europee; GEBCO è il fallback globale. Queste mappe non sostituiscono una carta nautica ufficiale o l'ecoscandaglio.
+  </div>
+</div>
+
 <div class="v30-mapbar">
  <button class="active" onclick="v30SetBase('street',this)">MAPPA</button>
  <button onclick="v30SetBase('bathy',this)">BATIMETRIA</button>
@@ -1716,7 +1760,7 @@ function loadScientificTimers(){const chum=+(localStorage.getItem('angels_tuna_t
 let passageResult=null;
 
 
-function scientificMoonData(date){const known=new Date(Date.UTC(2000,0,6,18,14)),cycle=30.23058867;const age=((((date-known)/86400000)%cycle)+cycle)%cycle;const illumination=(1-Math.cos(2*Math.PI*age/cycle))/2;let phase='Luna nuova';if(age<1.85)phase='Luna nuova';else if(age<5.54)phase='Falce crescente';else if(age<9.23)phase='Primo quarto';else if(age<12.92)phase='Gibbosa crescente';else if(age<16.61)phase='Luna piena';else if(age<20.30)phase='Gibbosa calante';else if(age<23.99)phase='Ultimo quarto';else if(age<27.68)phase='Falce calante';return{age,illumination,phase}}
+function scientificMoonData(date){const known=new Date(Date.UTC(2000,0,6,18,14)),cycle=30.53058867;const age=((((date-known)/86400000)%cycle)+cycle)%cycle;const illumination=(1-Math.cos(2*Math.PI*age/cycle))/2;let phase='Luna nuova';if(age<1.85)phase='Luna nuova';else if(age<5.54)phase='Falce crescente';else if(age<9.23)phase='Primo quarto';else if(age<12.92)phase='Gibbosa crescente';else if(age<16.61)phase='Luna piena';else if(age<20.30)phase='Gibbosa calante';else if(age<23.99)phase='Ultimo quarto';else if(age<27.68)phase='Falce calante';return{age,illumination,phase}}
 function detectRegionFromCoordinates(lat,lon){if(lat>=39&&lat<=43.2&&lon>=15.8&&lon<=20.2)return'south_adriatic';if(lat>43.2&&lat<=46.2&&lon>=12&&lon<=19)return'north_adriatic';if(lat>=35&&lat<40.5&&lon>=14&&lon<=21.5)return'ionian';if(lat>=34.5&&lat<=38.8&&lon>=10&&lon<15.5)return'sicily_channel';if(lat>=37&&lat<=44.5&&lon>=8&&lon<14.5)return'tyrrhenian';if(lon<10)return'west_med';return'east_med'}
 const scientificProfiles={south_adriatic:{name:'Adriatico meridionale',tuna:{spring:{phase:'migrazione riproduttiva / pre-riproduttiva',bands:[65,75,85],column:[15,50],temp:[20,25]},summer:{phase:'riproduzione tardiva e alimentazione post-riproduttiva',bands:[60,70,80],column:[15,50],temp:[23,29]},autumn:{phase:'alimentazione e dispersione',bands:[65,75,85],column:[20,60],temp:[20,27]},winter:{phase:'presenza meno prevedibile e dispersione',bands:[75,90,110],column:[30,90],temp:[14,21]}},little:{spring:{phase:'risalita stagionale',bands:[45,55,65],column:[10,35],temp:[19,24]},summer:{phase:'alimentazione costiera e di piattaforma',bands:[55,65,72],column:[8,35],temp:[24,29]},autumn:{phase:'alimentazione e dispersione',bands:[55,68,78],column:[12,45],temp:[21,27]},winter:{phase:'presenza ridotta',bands:[65,80,95],column:[20,60],temp:[15,22]}}},north_adriatic:{name:'Adriatico settentrionale',tuna:{spring:{phase:'ingresso stagionale',bands:[35,50,70],column:[10,40],temp:[18,24]},summer:{phase:'alimentazione su piattaforma',bands:[40,60,80],column:[10,45],temp:[22,28]},autumn:{phase:'alimentazione e uscita stagionale',bands:[50,70,90],column:[15,60],temp:[19,26]},winter:{phase:'bassa prevedibilità',bands:[70,100,130],column:[30,100],temp:[10,18]}}},ionian:{name:'Mar Ionio',tuna:{spring:{phase:'migrazione verso aree riproduttive',bands:[80,120,180],column:[20,80],temp:[20,25]},summer:{phase:'riproduzione e post-riproduzione',bands:[70,100,150],column:[15,70],temp:[23,29]},autumn:{phase:'alimentazione pelagica',bands:[90,150,250],column:[25,100],temp:[21,27]},winter:{phase:'dispersione profonda',bands:[150,250,400],column:[50,200],temp:[15,22]}}},sicily_channel:{name:'Canale di Sicilia',tuna:{spring:{phase:'avvicinamento alle aree riproduttive',bands:[100,200,400],column:[20,100],temp:[20,25]},summer:{phase:'riproduzione',bands:[100,250,500],column:[10,80],temp:[23,29]},autumn:{phase:'post-riproduzione e alimentazione',bands:[150,300,600],column:[30,150],temp:[21,27]},winter:{phase:'dispersione',bands:[250,500,800],column:[50,250],temp:[16,23]}}},tyrrhenian:{name:'Mar Tirreno',tuna:{spring:{phase:'migrazione e aggregazione',bands:[100,200,400],column:[20,100],temp:[19,25]},summer:{phase:'riproduzione e alimentazione',bands:[100,250,500],column:[15,100],temp:[23,29]},autumn:{phase:'post-riproduzione',bands:[150,300,600],column:[30,160],temp:[21,27]},winter:{phase:'dispersione profonda',bands:[250,500,900],column:[60,300],temp:[15,22]}}},west_med:{name:'Mediterraneo occidentale',tuna:{spring:{phase:'migrazione riproduttiva',bands:[150,300,600],column:[20,120],temp:[19,25]},summer:{phase:'riproduzione e post-riproduzione',bands:[100,250,500],column:[15,100],temp:[23,29]},autumn:{phase:'alimentazione e dispersione',bands:[200,500,900],column:[30,200],temp:[20,27]},winter:{phase:'dispersione',bands:[300,700,1200],column:[70,350],temp:[14,22]}}},east_med:{name:'Mediterraneo orientale',tuna:{spring:{phase:'migrazione e aggregazione',bands:[100,250,500],column:[20,120],temp:[20,26]},summer:{phase:'riproduzione / post-riproduzione',bands:[100,300,600],column:[15,120],temp:[24,30]},autumn:{phase:'alimentazione pelagica',bands:[150,400,800],column:[30,200],temp:[22,28]},winter:{phase:'dispersione',bands:[250,600,1000],column:[60,300],temp:[16,23]}}}};
 function scientificSeason(month){if(month>=3&&month<=5)return'spring';if(month>=6&&month<=8)return'summer';if(month>=9&&month<=11)return'autumn';return'winter'}
@@ -2913,7 +2957,7 @@ function openExternalNavigation(kind){
 // ===== V29 - LUNAR TRACKER =====
 // Approximate synodic month calculation. Suitable for planning/diary comparison,
 // not intended for astronomical navigation.
-const SYNODIC_MONTH=30.23058867;
+const SYNODIC_MONTH=30.53058867;
 const KNOWN_NEW_MOON_UTC=Date.UTC(2000,0,6,18,14,0);
 
 function moonDataForDate(value){
@@ -3351,6 +3395,259 @@ if ('serviceWorker' in navigator) {
 
 
 
+
+
+<script id="v303-map-fallback">
+(function(){
+ const S={lat:40.75,lon:17.70,span:.20,mode:'map'};
+ function E(id){return document.getElementById(id)}
+ function box(){
+   // span is latitude half-span; longitude compensated approximately for latitude
+   const latSpan=S.span, lonSpan=S.span/Math.max(.45,Math.cos(S.lat*Math.PI/180));
+   return {south:S.lat-latSpan,west:S.lon-lonSpan,north:S.lat+latSpan,east:S.lon+lonSpan};
+ }
+ function status(t){const e=E('v303Status');if(e)e.textContent=t}
+ function coord(){
+   const b=box(),km=Math.round(S.span*111);
+   const e=E('v303Coord');if(e)e.textContent=`${S.lat.toFixed(4)}, ${S.lon.toFixed(4)} · raggio ~${km} km`;
+   return b;
+ }
+ function mapUrl(b){
+   const bbox=[b.west,b.south,b.east,b.north].map(v=>v.toFixed(6)).join('%2C');
+   return `https://www.openstreetmap.org/export/embed.html?bbox=${bbox}&layer=mapnik&marker=${S.lat.toFixed(6)}%2C${S.lon.toFixed(6)}`;
+ }
+ function emodUrl(b){
+   const q=new URLSearchParams({
+     service:'WMS',request:'GetMap',version:'1.1.1',
+     layers:'emodnet:mean_multicolour',styles:'',
+     format:'image/png',transparent:'false',srs:'EPSG:4326',
+     bbox:[b.west,b.south,b.east,b.north].join(','),
+     width:'1200',height:'800'
+   });
+   return 'https://ows.emodnet-bathymetry.eu/wms?'+q.toString();
+ }
+ function gebcoUrl(b){
+   // WMS 1.3.0 EPSG:4326 axis order is latitude,longitude.
+   const q=new URLSearchParams({
+     service:'WMS',request:'GetMap',version:'1.3.0',
+     layers:'gebco_latest_2',format:'image/jpeg',crs:'EPSG:4326',
+     bbox:[b.south,b.west,b.north,b.east].join(','),
+     width:'1200',height:'800'
+   });
+   return 'https://wms.gebco.net/mapserv?'+q.toString();
+ }
+ function render(){
+   const b=coord(),frame=E('v303MapFrame'),img=E('v303BathyImg'),load=E('v303Loading');
+   if(!frame||!img)return;
+   frame.classList.remove('show');img.classList.remove('show');load.style.display='block';load.textContent='Caricamento…';
+   if(S.mode==='map'){
+     frame.src=mapUrl(b);frame.classList.add('show');
+     frame.onload=()=>{load.style.display='none';status('MAPPA OK')};
+     setTimeout(()=>{if(load.style.display!=='none'){load.textContent='Mappa in caricamento…'}},5000);
+   }else{
+     img.onerror=null;
+     img.onload=()=>{load.style.display='none';status(S.mode==='emod'?'EMODnet OK':'GEBCO OK')};
+     img.onerror=()=>{
+       if(S.mode==='emod'){
+         status('EMODnet non risponde → GEBCO');
+         S.mode='gebco';
+         img.src=gebcoUrl(b);
+       }else{
+         load.textContent='Servizio batimetrico non raggiungibile';
+         status('BATIMETRIA OFFLINE');
+       }
+     };
+     img.src=S.mode==='emod'?emodUrl(b):gebcoUrl(b);
+     img.classList.add('show');
+   }
+ }
+ window.v303Mode=function(mode,btn){
+   S.mode=mode;
+   document.querySelectorAll('.v303-tabs button').forEach(x=>x.classList.remove('active'));
+   if(btn)btn.classList.add('active');
+   render();
+ }
+ window.v303Zoom=function(dir){
+   if(dir>0)S.span=Math.max(.015,S.span/1.7);
+   else S.span=Math.min(2.2,S.span*1.7);
+   render();
+ }
+ window.v303GPS=function(){
+   if(!navigator.geolocation){status('GPS non disponibile');return}
+   status('Ricerca GPS…');
+   navigator.geolocation.getCurrentPosition(p=>{
+     S.lat=p.coords.latitude;S.lon=p.coords.longitude;S.span=.10;render();status('GPS ATTIVO');
+   },()=>status('GPS non autorizzato'),{enableHighAccuracy:true,timeout:12000});
+ }
+ window.v303CenterTSS=function(){S.lat=40.75;S.lon=17.70;S.span=.20;render()}
+ function start(){if(E('v303Viewport'))render()}
+ document.addEventListener('DOMContentLoaded',()=>setTimeout(start,300));
+ window.addEventListener('load',()=>setTimeout(start,700));
+})();
+</script>
+
+
+<script id="v304-fishing-engine">
+(function(){
+ const $e=id=>document.getElementById(id);
+ const fmt=d=>d instanceof Date&&!isNaN(d)?d.toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'}):'—';
+ const add=(d,m)=>new Date(d.getTime()+m*60000);
+ const win=(d,m)=>d?`${fmt(add(d,-m))} – ${fmt(add(d,m))}`:'—';
+ function dayDate(){
+   const v=$e('moonDate')?.value;
+   const d=v?new Date(v+'T12:00:00'):new Date();
+   return isNaN(d)?new Date():d;
+ }
+ function moonEvents(date,lat,lon){
+   if(!window.SunCalc) throw new Error('SunCalc non caricato');
+   const midnight=new Date(date); midnight.setHours(0,0,0,0);
+   const mt=SunCalc.getMoonTimes(midnight,lat,lon);
+   // Find upper/lower culmination by scanning actual lunar altitude every 5 minutes.
+   let hi=null,lo=null;
+   for(let m=0;m<1440;m+=5){
+     const t=new Date(midnight.getTime()+m*60000);
+     const alt=SunCalc.getMoonPosition(t,lat,lon).altitude;
+     if(!hi||alt>hi.alt)hi={t,alt};
+     if(!lo||alt<lo.alt)lo={t,alt};
+   }
+   return {rise:mt.rise||null,set:mt.set||null,transit:hi.t,anti:lo.t};
+ }
+ function catchBonus(hour){
+   try{
+     const arr=(window.db&&Array.isArray(db.catches))?db.catches:[];
+     let pts=0;
+     for(const c of arr){
+       if(!c.date)continue; const d=new Date(c.date);if(isNaN(d))continue;
+       let dif=Math.abs(hour-(d.getHours()+d.getMinutes()/60));dif=Math.min(dif,24-dif);
+       if(dif<=1)pts+=3; else if(dif<=2)pts+=2; else if(dif<=3)pts+=1;
+     }
+     return Math.min(8,pts);
+   }catch(e){return 0}
+ }
+ function dawnBonus(h){return ((h>=5&&h<=9)||(h>=17&&h<=21))?5:0}
+ function phaseData(date){
+   const mi=SunCalc.getMoonIllumination(date);
+   const f=mi.fraction;
+   let name='Luna crescente';
+   if(mi.phase<.03||mi.phase>.97)name='Luna nuova';
+   else if(mi.phase<.22)name='Crescente';
+   else if(mi.phase<.28)name='Primo quarto';
+   else if(mi.phase<.47)name='Gibbosa crescente';
+   else if(mi.phase<.53)name='Luna piena';
+   else if(mi.phase<.72)name='Gibbosa calante';
+   else if(mi.phase<.78)name='Ultimo quarto';
+   else name='Calante';
+   return {illum:f,name};
+ }
+ function render(){
+   const lat=Number($e('fishLat')?.value||40.75),lon=Number($e('fishLon')?.value||17.70);
+   if(!Number.isFinite(lat)||!Number.isFinite(lon))return;
+   try{
+     const date=dayDate(), ev=moonEvents(date,lat,lon), ph=phaseData(date);
+     const cand=[
+       {label:'Transito lunare',c:ev.transit,min:60,major:true,base:30},
+       {label:'Antitransito lunare',c:ev.anti,min:60,major:true,base:29},
+       {label:'Sorgere Luna',c:ev.rise,min:45,major:false,base:21},
+       {label:'Tramonto Luna',c:ev.set,min:45,major:false,base:21}
+     ].filter(x=>x.c);
+     cand.forEach(x=>{
+       const hr=x.c.getHours()+x.c.getMinutes()/60;
+       x.hist=catchBonus(hr);x.dawn=dawnBonus(hr);x.score=x.base+x.hist+x.dawn;
+     });
+     cand.sort((a,b)=>b.score-a.score);
+     const best=cand[0], second=cand[1];
+     const phaseBoost=Math.round(Math.abs(ph.illum-.5)*14);
+     const score=Math.max(35,Math.min(90,48+phaseBoost+(best?Math.round((best.hist+best.dawn)/2):0)));
+     if($e('fishScore'))$e('fishScore').textContent=score+'/100';
+     if($e('fishScoreBar'))$e('fishScoreBar').style.width=score+'%';
+     if($e('fishSummary'))$e('fishSummary').innerHTML=`<b>${score>=70?'ALTA':score>=55?'MEDIA':'BASSA'}</b> · ${ph.name} · ${Math.round(ph.illum*100)}% illuminata`;
+
+     const start=best?fmt(add(best.c,-best.min-20)):'—';
+     if($e('fishOperational'))$e('fishOperational').innerHTML=best?`
+       <div class="ft302-hero">
+        <div class="ft302-label">🔥 MIGLIORE FINESTRA</div><div class="ft302-best">${win(best.c,best.min)}</div>
+        <div class="ft302-label">SECONDA FINESTRA</div><div class="ft302-second">${second?win(second.c,second.min):'—'}</div>
+        <div class="ft302-advice"><b>Vai in pesca dalle ${start}.</b><br>La priorità deriva da evento lunare + alba/tramonto + orari delle catture salvate. Conferma sempre con Garmin, foraggio e corrente.</div>
+       </div>`:'Nessuna finestra disponibile';
+
+     if($e('fishingWindows'))$e('fishingWindows').innerHTML=[
+       ['MAGGIORE 1',ev.transit,60,'Transito lunare'],
+       ['MAGGIORE 2',ev.anti,60,'Antitransito lunare'],
+       ['MINORE 1',ev.rise,45,'Sorgere della Luna'],
+       ['MINORE 2',ev.set,45,'Tramontare della Luna']
+     ].map(x=>`<div class="fishing-window ${x[0].includes('MAGGIORE')?'major':'minor'}"><small>${x[0]}</small><strong>${x[1]?win(x[1],x[2]):'non disponibile'}</strong><small>${x[3]}</small></div>`).join('');
+
+     if($e('fishTimeline')){
+       let slots='';
+       for(let st=0;st<24;st+=4){
+         const mid=st+2;let level=1;
+         cand.forEach(x=>{let hr=x.c.getHours()+x.c.getMinutes()/60,d=Math.abs(mid-hr);d=Math.min(d,24-d);if(d<=2.2)level=Math.max(level,x.major?3:2);else if(d<=4)level=Math.max(level,2)});
+         slots+=`<div class="ft302-slot ${level===3?'high':level===2?'medium':''}"><b>${String(st).padStart(2,'0')}–${String(st+4).padStart(2,'0')}</b><small>${level===3?'🔥 ALTA':level===2?'MEDIA':'BASSA'}</small></div>`;
+       }
+       $e('fishTimeline').innerHTML=`<b>Attività nelle 24 ore</b><div class="ft302-timeline">${slots}</div>`;
+     }
+     if($e('fishLocationLabel')&&!$e('fishLocationLabel').textContent)$e('fishLocationLabel').textContent='Posizione impostata';
+   }catch(err){
+     console.error('Fishing Time v30.5',err);
+     if($e('fishSummary'))$e('fishSummary').innerHTML='<b>Errore di calcolo.</b> Ricarica la pagina una volta dopo il deploy.';
+   }
+ }
+ window.renderFishingTime=render;
+ window.useGPSForFishingTime=function(){
+   if(!navigator.geolocation){alert('GPS non disponibile');return}
+   if($e('fishLocationLabel'))$e('fishLocationLabel').textContent='Ricerca GPS…';
+   navigator.geolocation.getCurrentPosition(p=>{
+     if($e('fishLat'))$e('fishLat').value=p.coords.latitude.toFixed(4);
+     if($e('fishLon'))$e('fishLon').value=p.coords.longitude.toFixed(4);
+     if($e('fishLocationLabel'))$e('fishLocationLabel').textContent='Posizione GPS';
+     render();
+   },()=>{if($e('fishLocationLabel'))$e('fishLocationLabel').textContent='GPS non autorizzato'},{enableHighAccuracy:true,timeout:12000});
+ };
+ document.addEventListener('DOMContentLoaded',()=>{
+   setTimeout(render,700);
+   ['moonDate','fishLat','fishLon'].forEach(id=>{const e=$e(id);if(e)e.addEventListener('change',render)});
+ });
+ window.addEventListener('load',()=>setTimeout(render,900));
+})();
+</script>
+
+<audio id="reelStrikeAudio" preload="auto" playsinline src="./reel-strike-v305.wav"></audio>
+
+<script id="v305-reel-sound-fix">
+(function(){
+ const byId=id=>document.getElementById(id);
+ window.introSoundEnabled=function(){return localStorage.getItem('aky_intro_sound')!=='0'};
+ window.saveIntroSoundSetting=function(){
+   const el=byId('introSoundToggle');
+   localStorage.setItem('aky_intro_sound',el&&el.checked?'1':'0');
+ };
+ function syncToggle(){const el=byId('introSoundToggle');if(el)el.checked=window.introSoundEnabled();}
+ async function playStrike(){
+   if(!window.introSoundEnabled())return;
+   const a=byId('reelStrikeAudio'); if(!a)return;
+   try{
+     a.pause(); a.currentTime=0; a.volume=.75;
+     await a.play();
+   }catch(e){console.warn('Reel audio blocked',e)}
+ }
+ function bind(){
+   syncToggle();
+   const btn=byId('angelsIntroStart');
+   if(!btn||btn.dataset.soundBound)return;
+   btn.dataset.soundBound='1';
+   btn.addEventListener('click',function(){
+     // Important: play() is called directly inside the user gesture.
+     playStrike();
+     const v=byId('angelsIntroVideo');
+     if(v){try{v.muted=true;v.currentTime=0;v.play().catch(()=>{})}catch(e){}}
+     setTimeout(()=>btn.style.display='none',50);
+   },{capture:true});
+ }
+ document.addEventListener('DOMContentLoaded',bind);
+ window.addEventListener('load',bind);
+ setTimeout(bind,500);
+})();
+</script>
 
 </body>
 </html>

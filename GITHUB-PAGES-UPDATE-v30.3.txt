@@ -1,0 +1,12 @@
+ANGEL'S TUNA v30.3 — MAP FALLBACK
+
+Questa versione aggiunge una cartografia indipendente da Leaflet:
+- MAPPA: OpenStreetMap embedded;
+- BATIMETRIA EMODnet: immagine WMS diretta;
+- fallback automatico GEBCO 2026 se EMODnet non risponde;
+- GPS, zoom e centro Torre Santa Sabina;
+- nessuna dipendenza dalla libreria Leaflet per il viewer di emergenza.
+
+Mantiene tutte le funzioni della v30.2.
+
+Upload GitHub: Add file > Upload files > carica tutti i file estratti > Commit.
