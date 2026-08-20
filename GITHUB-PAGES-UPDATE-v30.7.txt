@@ -1,0 +1,13 @@
+ANGEL'S TUNA v30.7 — AUDIO REALE MULINELLO
+
+- Estratto l'audio dal video WhatsApp fornito.
+- File incluso: reel-strike-real.mp3 (~8 secondi).
+- Sostituito il suono sintetico della v30.5.
+- Riproduzione avviata direttamente dal tocco su AVVIA ANGEL'S TUNA per compatibilità iPhone/PWA.
+- Mantiene Luna + Fishing Time v30.6, mappe/batimetria, ICCAT, Spot, Diario e tutte le altre funzioni.
+
+Dopo il deploy GitHub:
+1. apri il sito in Safari e aggiorna;
+2. chiudi completamente la PWA;
+3. riaprila dalla Home;
+4. premi AVVIA ANGEL'S TUNA.

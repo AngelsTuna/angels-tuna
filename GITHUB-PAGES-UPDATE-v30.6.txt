@@ -1,0 +1,11 @@
+ANGEL'S TUNA v30.6 — MOON TRUTH FIX
+
+- Fase lunare derivata dal valore phase di SunCalc.
+- Illuminazione derivata separatamente da fraction.
+- 8 fasi nominate con arrotondamento all'ottavo più vicino.
+- Età lunare mostrata in giorni.
+- Prossime Luna nuova, Primo quarto, Luna piena, Ultimo quarto.
+- Fishing Time ricalcolato sulla stessa data e sugli stessi dati astronomici.
+- Mantiene mappe v30.3, Fishing Time v30.4 e audio mulinello v30.5.
+
+Dopo upload GitHub: apri una volta il sito in Safari, aggiorna, chiudi la PWA e riaprila.
